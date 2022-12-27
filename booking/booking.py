@@ -3,6 +3,7 @@ import time
 import os
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+from booking.booking_filtration import BookingFiltration
 
 
 class Booking(webdriver.Chrome):
@@ -72,14 +73,19 @@ class Booking(webdriver.Chrome):
         for _ in range(count - 1):
             increase_button_element.click()
 
-
     def click_search(self):
         search_button = self.find_element(
             By.CSS_SELECTOR, value='button[type="submit"]'
         )
         search_button.click()
 
-        time.sleep(10)
+    def apply_filtration(self):
+        filtration = BookingFiltration(driver=self)
+        filtration.apply_star_rating(2, 3, 4)
+        time.sleep(3)
+        filtration.sort_price_lowest_first()
+
+        time.sleep(20)
 
 
 
