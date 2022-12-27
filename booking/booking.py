@@ -50,6 +50,35 @@ class Booking(webdriver.Chrome):
             By.CSS_SELECTOR, value=f'td[data-date="{check_out_date}"]'
         )
         check_out_element.click()
+
+    def select_adults(self, count=1):
+        selection_element = self.find_element(By.ID, "xp__guests__toggle")
+        selection_element.click()
+
+        while True:
+            decrease_adult_element = self.find_element(
+                By.CSS_SELECTOR, value='button[aria-label="Decrease number of Adults"]'
+            )
+            decrease_adult_element.click()
+            adults_value_element = self.find_element(By.ID, 'group_adults')
+            adults_value = adults_value_element.get_attribute('value')
+            if int(adults_value) == 1:
+                break
+
+        increase_button_element = self.find_element(
+            By.CSS_SELECTOR, value='button[aria-label="Increase number of Adults"]'
+        )
+
+        for _ in range(count - 1):
+            increase_button_element.click()
+
+
+    def click_search(self):
+        search_button = self.find_element(
+            By.CSS_SELECTOR, value='button[type="submit"]'
+        )
+        search_button.click()
+
         time.sleep(10)
 
 
