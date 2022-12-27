@@ -11,7 +11,11 @@ class Booking(webdriver.Chrome):
         self.driver_path = driver_path
         self.teardown = teardown
         os.environ['PATH'] += self.driver_path
-        super(Booking, self).__init__()
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        # if you need to leave a browser opened after the test make active the code below
+        # options.add_experimental_option("detach", True)
+        super(Booking, self).__init__(options=options)
         self.implicitly_wait(15)
         self.maximize_window()
 
@@ -84,8 +88,4 @@ class Booking(webdriver.Chrome):
         filtration.apply_star_rating(2, 3, 4)
         time.sleep(3)
         filtration.sort_price_lowest_first()
-
-        time.sleep(20)
-
-
 
