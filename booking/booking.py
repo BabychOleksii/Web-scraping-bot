@@ -30,5 +30,27 @@ class Booking(webdriver.Chrome):
             By.CSS_SELECTOR, value=f'a[data-modal-header-async-url-param*="selected_currency={currency}"]'
         )
         selected_currency_element.click()
-        # time.sleep(30)
+
+    def select_place_to_go(self, place_to_go):
+        search_field = self.find_element(By.ID, 'ss')
+        search_field.clear()
+        search_field.send_keys(place_to_go)
+
+        first_result = self.find_element(
+            By.CSS_SELECTOR, value='li[data-i="0"]'
+        )
+        first_result.click()
+
+    def select_dates(self, check_in_date, check_out_date):
+        check_in_element = self.find_element(
+            By.CSS_SELECTOR, value=f'td[data-date="{check_in_date}"]'
+        )
+        check_in_element.click()
+        check_out_element = self.find_element(
+            By.CSS_SELECTOR, value=f'td[data-date="{check_out_date}"]'
+        )
+        check_out_element.click()
+        time.sleep(10)
+
+
 
