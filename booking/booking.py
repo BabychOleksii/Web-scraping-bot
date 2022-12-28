@@ -4,6 +4,8 @@ import os
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from booking.booking_filtration import BookingFiltration
+from booking.booking_report import BookingReport
+from prettytable import PrettyTable
 
 
 class Booking(webdriver.Chrome):
@@ -14,7 +16,7 @@ class Booking(webdriver.Chrome):
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         # if you need to leave a browser opened after the test make active the code below
-        # options.add_experimental_option("detach", True)
+        options.add_experimental_option("detach", True)
         super(Booking, self).__init__(options=options)
         self.implicitly_wait(15)
         self.maximize_window()
@@ -88,4 +90,17 @@ class Booking(webdriver.Chrome):
         filtration.apply_star_rating(2, 3, 4)
         time.sleep(3)
         filtration.sort_price_lowest_first()
+        # time.sleep(3)
+
+    def report_results(self):
+        hotel_boxes = self.find_element(
+            By.ID, 'search_results_table'
+        )
+        report = BookingReport(hotel_boxes)
+        table = PrettyTable(
+            field_names=["Hotel Name", "Hotel Price", "Hotel Score"]
+        )
+        table.add_rows(report.pull_deal_box_attribute())
+        print(table)
+
 
